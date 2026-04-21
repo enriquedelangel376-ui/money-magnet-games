@@ -6,96 +6,33 @@
     <title>MONEY MAGNET GAMES 💰</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --gold: #ffcc00;
-            --dark-bg: #0f1216;
-            --card-bg: #1a1e23;
-            --accent: #bd19d1;
-        }
-
-        body {
-            background-color: var(--dark-bg);
-            color: white;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            user-select: none;
-        }
-
+        :root { --gold: #ffcc00; --dark-bg: #0f1216; --card-bg: #1a1e23; --green: #00ff88; }
+        body { background-color: var(--dark-bg); color: white; font-family: sans-serif; margin: 0; padding: 0; text-align: center; user-select: none; }
+        
         /* HEADER */
-        .header {
-            background-color: var(--card-bg);
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #2d323a;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+        .header { background: var(--card-bg); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+        .balance-box { background: #000; border: 1px solid var(--gold); border-radius: 20px; padding: 4px 15px; color: var(--gold); font-weight: bold; }
 
-        .balance-container {
-            background: #000;
-            padding: 5px 15px;
-            border-radius: 20px;
-            border: 1px solid var(--gold);
-            display: flex;
-            align-items: center;
-        }
+        /* JUEGO FRUIT SLOTS */
+        #fruit-game { display: none; background: #0b0e11; min-height: 100vh; padding-bottom: 50px; }
+        .slot-machine { background: #1a1e23; margin: 15px; padding: 10px; border-radius: 15px; border: 2px solid #333; position: relative; }
+        .grid-fruit { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+        .item { background: #0f1216; padding: 8px; border-radius: 8px; border: 1px solid #222; display: flex; justify-content: center; }
+        .item img { width: 30px; height: 30px; }
+        .active { border-color: var(--gold); background: #2d323a; box-shadow: 0 0 10px var(--gold); }
 
-        .balance { color: var(--gold); font-weight: bold; font-size: 18px; margin-right: 10px; }
+        /* CONTROLES DE APUESTA (IGUAL AL VIDEO) */
+        .controls { background: #1a1e23; margin: 15px; padding: 15px; border-radius: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .bet-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .bet-adjust { display: flex; align-items: center; background: #0f1216; border-radius: 10px; padding: 5px; border: 1px solid #333; flex: 1; }
+        .btn-math { background: #2d323a; border: none; color: white; width: 30px; height: 30px; border-radius: 5px; font-size: 20px; }
+        .bet-value { flex: 1; font-weight: bold; color: var(--gold); }
+        .btn-ir { background: var(--green); color: black; border: none; width: 80px; height: 80px; border-radius: 15px; font-weight: bold; font-size: 20px; box-shadow: 0 0 15px rgba(0,255,136,0.3); }
 
-        /* LOBBY */
-        .main-container { padding: 15px; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .game-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 10px;
-            border: 1px solid #3b424b;
-            cursor: pointer;
-        }
-        .game-card img { width: 100%; border-radius: 8px; margin-bottom: 5px; }
-
-        /* FRUIT SLOTS GAME */
-        #fruit-game { display: none; padding: 15px; background: #000; min-height: 100vh; }
-        .slot-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            background: #1a1e23;
-            padding: 15px;
-            border-radius: 15px;
-            border: 3px solid var(--gold);
-            margin: 20px 0;
-        }
-        .slot-item {
-            background: #0f1216;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .slot-item img { width: 35px; height: 35px; }
-        .active-slot { border-color: var(--gold); box-shadow: 0 0 15px var(--gold); background: #2d323a; }
-
-        /* MODAL */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;
-        }
-        .modal-content {
-            background: linear-gradient(135deg, #1e272e, #000);
-            width: 80%; padding: 30px; border-radius: 20px; border: 2px solid var(--gold);
-        }
-        .btn-action {
-            background: var(--gold); color: black; border: none; padding: 12px;
-            border-radius: 25px; font-weight: bold; width: 100%; margin-top: 15px;
-        }
+        /* MODALES */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: #1a1e23; width: 80%; padding: 25px; border-radius: 20px; border: 2px solid var(--gold); }
+        .btn-close { background: var(--gold); color: black; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -103,131 +40,157 @@
     <div id="lobby">
         <div class="header">
             <div style="color:var(--gold); font-weight:bold;">MONEY MAGNET 🧲</div>
-            <div class="balance-container">
-                <div class="balance">$ <span id="saldo-txt">500.00</span></div>
-            </div>
+            <div class="balance-box">$ <span id="saldo-lobby">500.00</span></div>
         </div>
-        <div class="main-container">
-            <h2 style="color:var(--gold)">🎰 SALA VIP</h2>
-            <div class="grid">
-                <div class="game-card" onclick="openFruitGame()">
-                    <img src="https://img.icons8.com/emoji/96/cherry-emoji.png">
-                    <span>Fruit Slots</span>
-                </div>
-                <div class="game-card" onclick="alert('Próximamente...')">
-                    <img src="https://img.icons8.com/color/96/diamond--v1.png">
-                    <span>Gems</span>
-                </div>
-                <div class="game-card" onclick="alert('Próximamente...')">
-                    <img src="https://img.icons8.com/color/96/poker-cards.png">
-                    <span>Poker</span>
-                </div>
+        <div style="padding: 20px;">
+            <div style="background:var(--card-bg); padding:20px; border-radius:15px; border:1px solid #333;" onclick="openGame()">
+                <img src="https://img.icons8.com/emoji/96/cherry-emoji.png" width="60"><br>
+                <b>FRUIT SLOTS 3</b>
             </div>
         </div>
     </div>
 
     <div id="fruit-game">
-        <button onclick="backToLobby()" style="background:none; color:white; border:none; float:left; font-size:20px;">⬅️</button>
-        <h2 style="color:var(--gold)">FRUIT SLOTS 🍒</h2>
-        
-        <div class="slot-grid" id="tablero">
-            <div class="slot-item"><img src="https://img.icons8.com/emoji/48/cherry-emoji.png"></div>
-            <div class="slot-item"><img src="https://img.icons8.com/emoji/48/apple-emoji.png"></div>
-            <div class="slot-item"><img src="https://img.icons8.com/emoji/48/tangerine-emoji.png"></div>
-            <div class="slot-item"><img src="https://img.icons8.com/color/48/bell.png"></div>
-            <div class="slot-item"><img src="https://img.icons8.com/emoji/48/grapes-emoji.png"></div>
-            <div class="slot-item"><img src="https://img.icons8.com/color/48/star--v1.png"></div>
-            <div class="slot-item"><img src="https://img.icons8.com/emoji/48/watermelon-emoji.png"></div>
-            <div class="slot-item"><img src="https://img.icons8.com/color/48/diamond--v1.png"></div>
-            <div class="slot-item"><img src="https://img.icons8.com/emoji/48/lemon-emoji.png"></div>
-            <div class="slot-item"><img src="https://img.icons8.com/color/48/number-7.png"></div>
-            <div class="slot-item"><img src="https://img.icons8.com/emoji/48/cherry-emoji.png"></div>
-            <div class="slot-item"><img src="https://img.icons8.com/color/48/bell.png"></div>
+        <div class="header">
+            <button onclick="location.reload()" style="background:none; border:none; color:white; font-size:20px;">⬅️</button>
+            <div class="balance-box">$ <span id="saldo-game">500.00</span></div>
         </div>
 
-        <button class="btn-action" id="btn-spin" onclick="spinFruit()" style="font-size:20px;">¡GIRAR! 🎰</button>
+        <div class="slot-machine">
+            <h3 style="color:var(--gold); margin: 5px 0;">Fruit Slots</h3>
+            <div class="grid-fruit" id="tablero">
+                </div>
+        </div>
+
+        <div class="controls">
+            <div style="display:flex; gap:10px; margin-bottom:5px;">
+                <button style="flex:1; background: #2d323a; border:none; color:white; padding:5px; border-radius:5px;">Normal</button>
+                <button style="flex:1; background: transparent; border:none; color:gray; padding:5px;">Automático</button>
+            </div>
+            
+            <div class="bet-row">
+                <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+                    <div class="bet-adjust">
+                        <button class="btn-math" onclick="changeBet(-1)">-</button>
+                        <div class="bet-value"><span id="val-apuesta">10</span><br><small style="font-size:9px; color:gray;">Apuesta</small></div>
+                        <button class="btn-math" onclick="changeBet(1)">+</button>
+                    </div>
+                    <div style="background:#0f1216; padding:8px; border-radius:10px; border:1px solid #333;">
+                        <span style="color:var(--gold); font-weight:bold;">Max $50.00</span><br><small style="font-size:9px; color:gray;">Apuesta Max</small>
+                    </div>
+                </div>
+                <button class="btn-ir" id="spin-button" onclick="startSpin()">IR</button>
+            </div>
+        </div>
     </div>
 
-    <div id="modal" class="modal">
-        <div class="modal-content" id="modal-body"></div>
-    </div>
+    <div id="modal" class="modal"><div class="modal-content" id="modal-body"></div></div>
 
     <script>
         const tele = window.Telegram.WebApp;
         tele.expand();
 
         let saldo = 500.00;
+        let apuesta = 10;
         const horaInicio = localStorage.getItem('casino_start') || Date.now();
         if(!localStorage.getItem('casino_start')) localStorage.setItem('casino_start', horaInicio);
 
-        function updateDisplay() {
-            document.getElementById('saldo-txt').innerText = saldo.toFixed(2);
+        // Iconos del juego
+        const icons = [
+            "https://img.icons8.com/emoji/48/cherry-emoji.png",
+            "https://img.icons8.com/emoji/48/apple-emoji.png",
+            "https://img.icons8.com/emoji/48/tangerine-emoji.png",
+            "https://img.icons8.com/color/48/bell.png",
+            "https://img.icons8.com/color/48/star--v1.png",
+            "https://img.icons8.com/emoji/48/watermelon-emoji.png",
+            "https://img.icons8.com/color/48/diamond--v1.png",
+            "https://img.icons8.com/color/48/number-7.png"
+        ];
+
+        function initTablero() {
+            const tablero = document.getElementById('tablero');
+            tablero.innerHTML = '';
+            for(let i=0; i<16; i++) {
+                const img = icons[Math.floor(Math.random()*icons.length)];
+                tablero.innerHTML += `<div class="item"><img src="${img}"></div>`;
+            }
         }
 
-        function openFruitGame() {
+        function openGame() {
             document.getElementById('lobby').style.display = 'none';
             document.getElementById('fruit-game').style.display = 'block';
+            initTablero();
         }
 
-        function backToLobby() {
-            document.getElementById('lobby').style.display = 'block';
-            document.getElementById('fruit-game').style.display = 'none';
+        function changeBet(val) {
+            apuesta += val;
+            if(apuesta < 1) apuesta = 1;
+            if(apuesta > 50) apuesta = 50;
+            document.getElementById('val-apuesta').innerText = apuesta;
         }
 
-        function spinFruit() {
-            if (saldo < 10) {
-                showModal("SALDO AGOTADO ❌", 0, false, "Para seguir ganando, recarga en soporte.");
+        function updateUI() {
+            document.getElementById('saldo-lobby').innerText = saldo.toFixed(2);
+            document.getElementById('saldo-game').innerText = saldo.toFixed(2);
+        }
+
+        function startSpin() {
+            if(saldo < apuesta) {
+                showModal("¡SALDO INSUFICIENTE!", 0, false, "Recarga para seguir jugando.");
                 return;
             }
 
-            const btn = document.getElementById('btn-spin');
-            btn.disabled = true;
-            const items = document.querySelectorAll('.slot-item');
-            let i = 0;
-
-            const loop = setInterval(() => {
-                items.forEach(el => el.classList.remove('active-slot'));
-                items[Math.floor(Math.random() * items.length)].classList.add('active-slot');
-                i++;
-                if (i > 12) {
-                    clearInterval(loop);
-                    btn.disabled = false;
-                    processResult();
-                }
-            }, 100);
-        }
-
-        function processResult() {
-            const transcurrido = Date.now() - horaInicio;
-            let prob = transcurrido < 3600000 ? 0.8 : (transcurrido < 7200000 ? 0.4 : 0.05);
+            // Descontar apuesta
+            saldo -= apuesta;
+            updateUI();
             
-            const win = Math.random() < prob;
-            const amount = Math.floor(Math.random() * 300) + 50;
+            const btn = document.getElementById('spin-button');
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
 
-            if (win) {
-                saldo += amount;
-                showModal("¡ENHORABUENA! 🔥", amount, true, "Usted ha ganado");
-            } else {
-                saldo -= amount;
-                if(saldo < 0) saldo = 0;
-                showModal("PERDISTE ❌", amount, false, "Sigue intentando");
-            }
-            updateDisplay();
+            const items = document.querySelectorAll('.item');
+            let count = 0;
+            const timer = setInterval(() => {
+                items.forEach(el => el.classList.remove('active'));
+                const rand = Math.floor(Math.random()*items.length);
+                items[rand].classList.add('active');
+                items[rand].innerHTML = `<img src="${icons[Math.floor(Math.random()*icons.length)]}">`;
+                count++;
+                if(count > 15) {
+                    clearInterval(timer);
+                    btn.disabled = false;
+                    btn.style.opacity = "1";
+                    checkResult();
+                }
+            }, 60);
         }
 
-        function showModal(title, amount, isWin, txt) {
+        function checkResult() {
+            const tiempo = Date.now() - horaInicio;
+            // Trampa: 80% ganar la 1ra hora, 5% después de 4 horas
+            let prob = tiempo < 3600000 ? 0.8 : (tiempo < 14400000 ? 0.3 : 0.05);
+            
+            if(Math.random() < prob) {
+                let win = apuesta * (Math.floor(Math.random()*5) + 2);
+                saldo += win;
+                showModal("¡ENHORABUENA!", win, true, "Usted ha ganado");
+            }
+            updateUI();
+        }
+
+        function showModal(title, amt, win, txt) {
             const modal = document.getElementById('modal');
             const body = document.getElementById('modal-body');
             body.innerHTML = `
-                <h2 style="color:${isWin?'#ffcc00':'#ff4d4d'}">${title}</h2>
+                <h2 style="color:${win?'#ffcc00':'#ff4d4d'}">${title}</h2>
                 <p>${txt}</p>
-                <h1 style="font-size:40px;">${isWin?'+':'-'} $${amount}</h1>
-                <button class="btn-action" onclick="document.getElementById('modal').style.display='none'">CONFIRMAR</button>
+                <h1 style="font-size:40px;">${win?'+':''} $${amt.toFixed(2)}</h1>
+                <button class="btn-close" onclick="document.getElementById('modal').style.display='none'">CONFIRMAR</button>
             `;
             modal.style.display = 'flex';
         }
 
-        updateDisplay();
+        updateUI();
     </script>
 </body>
 </html>
