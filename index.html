@@ -1,287 +1,308 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>MONEY MAGNET GAMES</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-    <style>
-        :root {
-            --bg-black: #070707;
-            --card-dark: #111111;
-            --mx-gold: #ffcc00;
-            --mx-green: #00ff88;
-            --mx-purple: #6a1b9a;
-        }
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+      <title>MONEY MAGNET GAMES</title>
+      
+      <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-        body {
-            background-color: var(--bg-black);
-            color: #ffffff;
-            font-family: 'Roboto', sans-serif;
-            margin: 0; padding: 0;
-            overflow-x: hidden;
-            user-select: none;
-        }
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="css/responsive.css">
+      <link rel="icon" href="images/fevicon.png" type="image/gif" />
+      <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+      
+      <style>
+         .mm-screen { display: none; width: 100%; min-height: 100vh; flex-direction: column; align-items: center; background: #0a0b0d; color: white; position: fixed; top: 0; left: 0; z-index: 99999; overflow-y: auto; padding-bottom: 20px;}
+         .mm-active { display: flex; }
+         .top-bar { width: 100%; padding: 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100;}
+         .bal-box { background: #000; border: 1px solid #ffcc00; color: #ffcc00; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
+         
+         /* Carga Ta Da */
+         .tada-logo { font-size: 50px; font-weight: 900; color: #ff8800; margin-top: 40vh; text-shadow: 0 0 20px rgba(255,136,0,0.5); }
+         .progress-bar-container { width: 70%; height: 8px; background: #222; border-radius: 4px; overflow: hidden; margin-top: 20px; }
+         .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #00ffff, #0088ff); transition: width 0.2s; }
+         
+         /* Juego */
+         .slot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #1a1d23; padding: 15px; border-radius: 20px; border: 2px solid #333; width: 90%; margin-top: 20px;}
+         .cell { background: #0d0f12; aspect-ratio: 1/1; border-radius: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #222; }
+         .cell img { width: 80%; height: 80%; object-fit: contain; }
+         .controls { width: 90%; background: #151515; border-radius: 15px; padding: 15px; margin-top: 20px; border: 1px solid #222; }
+         .bet_btn { background: #222; border: none; color: white; width: 35px; height: 35px; border-radius: 8px; font-size: 20px; }
+         .spin_btn { background: #00ff88; color: black; border: none; width: 80px; height: 80px; border-radius: 15px; font-weight: 900; font-size: 20px; margin-left: 15px; }
 
-        /* --- NAVEGACIÓN SUPERIOR --- */
-        .head_top {
-            background: #151515;
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #222;
-            position: sticky; top: 0; z-index: 1000;
-        }
-        .balance_box {
-            background: #000;
-            border: 1px solid var(--mx-gold);
-            padding: 5px 15px;
-            border-radius: 20px;
-            color: var(--mx-gold);
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        /* --- PANTALLAS --- */
-        .screen { display: none; width: 100%; min-height: 100vh; flex-direction: column; align-items: center; }
-        .active-screen { display: flex; }
-
-        /* --- LOBBY PROFESIONAL --- */
-        .banner_main {
-            width: 92%;
-            background: linear-gradient(135deg, #2b0057 0%, #000000 100%);
-            margin: 15px 0;
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid #33105d;
-        }
-        .section_title { width: 92%; margin: 10px 0; font-size: 18px; font-weight: bold; color: var(--mx-gold); }
-        
-        .game_grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            width: 92%;
-            padding-bottom: 40px;
-        }
-        .game_card {
-            background: var(--card-dark);
-            border-radius: 15px;
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #222;
-            position: relative;
-        }
-        .game_card img { width: 100%; aspect-ratio: 1/1; border-radius: 10px; object-fit: cover; margin-bottom: 8px; }
-        .game_card span { font-size: 13px; font-weight: bold; color: #ccc; }
-        .tag_hot { position: absolute; top: 5px; left: 5px; background: red; font-size: 9px; padding: 2px 6px; border-radius: 5px; font-weight: bold; }
-
-        /* --- CARGA TA DA --- */
-        #loading-screen { background: #000; justify-content: center; }
-        .tada_logo { font-size: 45px; font-weight: 900; color: #ff6600; margin-bottom: 20px; }
-        .bar_container { width: 60%; height: 6px; background: #222; border-radius: 3px; overflow: hidden; }
-        .bar_fill { width: 0%; height: 100%; background: #00ffff; transition: width 0.2s; }
-
-        /* --- INTERFAZ DE JUEGO --- */
-        .game_header { width: 100%; padding: 15px; display: flex; align-items: center; background: #111; }
-        .game_area { flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0; }
-        
-        /* Tablero genérico para Slots */
-        .slot_grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
-            background: #1a1d23; padding: 15px; border-radius: 20px; border: 2px solid #333; width: 85%;
-        }
-        .cell { background: #0d0f12; aspect-ratio: 1/1; border-radius: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #222; }
-        .cell img { width: 80%; height: 80%; object-fit: contain; }
-
-        /* Controles */
-        .controls { width: 90%; background: #151515; border-radius: 15px; padding: 15px; margin: 20px 0; border: 1px solid #222; }
-        .bet_btn { background: #222; border: none; color: white; width: 35px; height: 35px; border-radius: 8px; font-size: 20px; }
-        .spin_btn { background: var(--mx-green); color: black; border: none; width: 80px; height: 80px; border-radius: 15px; font-weight: 900; font-size: 20px; margin-left: 15px; }
-
-        /* MODAL */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; }
-        .modal_content { background: #111; width: 80%; border-radius: 25px; padding: 30px; border: 2px solid var(--mx-gold); text-align: center; }
-        .confirm_btn { background: var(--mx-gold); color: black; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 20px; }
-
-    </style>
-</head>
-<body>
-
-    <div id="lobby" class="screen active-screen">
-        <div class="head_top">
-            <div style="font-weight:900; font-size:20px;">MONEY<span>MAGNET</span></div>
-            <div class="balance_box">$ <span class="bal_val">1088.00</span></div>
-        </div>
-
-        <div class="banner_main">
-            <h2 style="margin:0; font-size:20px;">¡BONO DIARIO!</h2>
-            <p style="margin:5px 0 0; font-size:12px; color: #aaa;">Reclama tus $100 MXN de regalo al invitar amigos.</p>
-        </div>
-
-        <div class="section_title">🎰 Juegos Destacados</div>
-        
-        <div class="game_grid">
-            <div class="game_card" onclick="openLoader('fruit-slots', 'Fruit Slots')">
-                <div class="tag_hot">HOT</div>
-                <img src="slot.png" onerror="this.src='https://img.icons8.com/emoji/96/cherry-emoji.png'">
-                <span>Fruit Slots</span>
-            </div>
-            <div class="game_card" onclick="openLoader('game-screen', 'Fortune Gems 2')">
-                <img src="gemas.png" onerror="this.src='https://img.icons8.com/color/96/gem.png'">
-                <span>Fortune Gems 2</span>
-            </div>
-            <div class="game_card" onclick="openLoader('game-screen', 'Big Bass Catch')">
-                <img src="pesca.png" onerror="this.src='https://img.icons8.com/color/96/fish.png'">
-                <span>Big Bass Catch</span>
-            </div>
-            <div class="game_card" onclick="openLoader('game-screen', 'Mines Diamond')">
-                <img src="minas.png" onerror="this.src='https://img.icons8.com/color/96/diamond--v1.png'">
-                <span>Mines Diamond</span>
-            </div>
-        </div>
-    </div>
-
-    <div id="loading-screen" class="screen">
-        <div class="tada_logo">Ta Da</div>
-        <div class="bar_container">
-            <div class="bar_fill" id="load_bar"></div>
-        </div>
-        <p style="margin-top:10px; color:#666; font-size:13px;" id="load_txt">Cargando... 0%</p>
-    </div>
-
-    <div id="fruit-slots" class="screen">
-        <div class="head_top">
-            <button onclick="location.reload()" style="background:none; border:none; color:white; font-size:24px;"><i class="fa fa-arrow-left"></i></button>
-            <div class="balance_box">$ <span class="bal_val">1088.00</span></div>
-        </div>
-        <div class="game_area">
-            <h2 style="color:var(--mx-gold);">Fruit Slots 🍒</h2>
-            <div class="slot_grid" id="fs_board"></div>
-            <div class="controls">
-                <div style="display:flex; align-items:center; justify-content:space-between;">
-                    <div style="display:flex; align-items:center; background:#000; padding:5px 15px; border-radius:10px; border:1px solid #333; flex:1;">
-                        <button class="bet_btn" onclick="adjBet(-5)">-</button>
-                        <div style="flex:1; text-align:center;"><span style="font-weight:bold; color:var(--mx-gold);">$ <span id="bet_val">10</span></span><br><small style="font-size:9px; color:#555;">APUESTA</small></div>
-                        <button class="bet_btn" onclick="adjBet(5)">+</button>
-                    </div>
-                    <button class="spin_btn" onclick="spinFS()">IR</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="game-screen" class="screen">
-        <div class="head_top">
-            <button onclick="location.reload()" style="background:none; border:none; color:white; font-size:24px;"><i class="fa fa-arrow-left"></i></button>
-            <div class="balance_box">$ <span class="bal_val">1088.00</span></div>
-        </div>
-        <div class="game_area">
-            <h1 id="game_title" style="color:var(--mx-gold);">Juego</h1>
-            <p style="color:#666;">Cargando motor gráfico oficial...</p>
-            <button class="confirm_btn" style="width:200px;" onclick="location.reload()">VOLVER</button>
-        </div>
-    </div>
-
-    <div id="win_modal" class="modal">
-        <div class="modal_content">
-            <h2 style="color:var(--mx-gold); font-size:30px; margin:0;">¡ENHORABUENA!</h2>
-            <p style="color:#777; margin:5px 0;">Has ganado un premio</p>
-            <h1 style="font-size:45px; margin:15px 0;">+ $<span id="win_amt">0.00</span></h1>
-            <button class="confirm_btn" onclick="document.getElementById('win_modal').style.display='none'">CONFIRMAR</button>
-        </div>
-    </div>
-
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        let saldo = 1088.00;
-        let bet = 10;
-        const start = localStorage.getItem('mm_start') || Date.now();
-        if(!localStorage.getItem('mm_start')) localStorage.setItem('mm_start', start);
-
-        function updateUI() {
-            document.querySelectorAll('.bal_val').forEach(el => el.innerText = saldo.toFixed(2));
-            document.getElementById('bet_val').innerText = bet;
-        }
-
-        function adjBet(v) {
-            bet += v;
-            if(bet < 5) bet = 5; if(bet > 100) bet = 100;
-            updateUI();
-        }
-
-        // --- SISTEMA DE CARGA TA DA ---
-        function openLoader(targetId, title) {
-            document.getElementById('lobby').classList.remove('active-screen');
-            document.getElementById('loading-screen').classList.add('active-screen');
+         /* Modal */
+         .mm-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; }
+         .mm-modal-content { background: #111; width: 85%; border-radius: 25px; padding: 30px; border: 2px solid #ffcc00; text-align: center; }
+         .confirm_btn { background: #ffcc00; color: black; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 20px; font-size: 18px;}
+      </style>
+   </head>
+   <body class="main-layout">
+      <div class="loader_bg">
+         <div class="loader"><img src="images/loading.gif" alt="#" /></div>
+      </div>
+      
+      <div class="wrapper" id="main-website">
+         <div class="sidebar">
+            <nav id="sidebar">
+               <div id="dismiss">
+                  <i class="fa fa-arrow-left"></i>
+               </div>
+               <ul class="list-unstyled components">
+                  <li class="active"><a href="index.html">Home</a></li>
+                  <li><a href="#about">About</a></li>
+                  <li><a href="#game">Game</a></li>
+                  <li><a href="#customer">Our customer</a></li>
+                  <li><a href="#contact">Contact</a></li>
+               </ul>
+            </nav>
+         </div>
+         <div id="content">
+            <header>
+               <div class="head_top">
+                  <div class="header">
+                     <div class="container-fluid">
+                        <div class="row">
+                           <div class="col-md-3 logo_section">
+                              <div class="full">
+                                 <div class="center-desk">
+                                    <div class="logo">
+                                       <a href="index.html"><strong style="color:white; font-size:24px;">MONEY<span style="color:#00ff88;">MAGNET</span></strong></a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-9">
+                              <div class="right_header_info">
+                                 <ul>
+                                    <li class="menu_iconb">
+                                       <a href="Javascript:void(0)" style="background:#ffcc00; color:black; font-weight:bold; border-radius:20px; padding:5px 15px;">
+                                          $ <span class="bal_val">1088.00</span> MXN
+                                       </a>
+                                    </li>
+                                    <li>
+                                       <button type="button" id="sidebarCollapse">
+                                       <img src="images/menu_icon.png" alt="#" />
+                                       </button>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </header>
             
-            let p = 0;
-            const bar = document.getElementById('load_bar');
-            const txt = document.getElementById('load_txt');
+            <section class="slider_section">
+               <div class="banner_main">
+                  <img src="images/bg_main.jpg" alt="#"/>
+                  <div class="container-fluid padding3">
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="text-bg">
+                              <a href="#game">JUGAR AHORA</a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </section>
 
-            const loop = setInterval(() => {
-                p += Math.floor(Math.random()*15)+5;
-                if(p >= 100) {
-                    p = 100;
-                    clearInterval(loop);
-                    setTimeout(() => {
-                        document.getElementById('loading-screen').classList.remove('active-screen');
-                        document.getElementById(targetId).classList.add('active-screen');
-                        if(targetId === 'fruit-slots') initFS();
-                        document.getElementById('game_title').innerText = title;
-                    }, 400);
-                }
-                bar.style.width = p + '%';
-                txt.innerText = `Cargando recursos... ${p}%`;
-            }, 180);
-        }
+         <div id="game" class="casino">
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="titlepage">
+                        <h2>Juegos Populares</h2>
+                        <span></span>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-4 padding_bottom" onclick="openGame('Fruit Slots')">
+                     <div class="game_box" style="cursor:pointer; border: 2px solid #ffcc00; border-radius:15px; overflow:hidden;">
+                        <figure><img src="slot.png" onerror="this.src='images/game1.jpg'" alt="#"/></figure>
+                     </div>
+                     <div class="game">
+                        <h3>Fruit Slots</h3>
+                     </div>
+                  </div>
+                  <div class="col-md-4 padding_bottom" onclick="openGame('Fortune Gems 2')">
+                     <div class="game_box" style="cursor:pointer; border: 2px solid #333; border-radius:15px; overflow:hidden;">
+                        <figure><img src="images/game2.jpg" alt="#"/></figure>
+                     </div>
+                     <div class="game">
+                        <h3>Fortune Gems 2</h3>
+                     </div>
+                  </div>
+                  <div class="col-md-4 padding_bottom" onclick="openGame('Big Bass Catch')">
+                     <div class="game_box" style="cursor:pointer; border: 2px solid #333; border-radius:15px; overflow:hidden;">
+                        <figure><img src="images/game3.jpg" alt="#"/></figure>
+                     </div>
+                     <div class="game">
+                        <h3>Big Bass Catch</h3>
+                     </div>
+                  </div>
+                  <div class="col-md-4 margin_bottom1">
+                     <div class="game_box"><figure><img src="images/game4.jpg" alt="#"/></figure></div>
+                     <div class="game"><h3>Mines Diamond</h3></div>
+                  </div>
+               </div>
+            </div>
+         </div>
 
-        // --- FRUIT SLOTS ---
-        function initFS() {
-            const board = document.getElementById('fs_board');
-            board.innerHTML = '';
-            for(let i=0; i<16; i++) {
-                board.innerHTML += `<div class="cell"><img src="slot.png" onerror="this.src='https://img.icons8.com/emoji/48/cherry-emoji.png'"></div>`;
-            }
-        }
+         </div>
+      </div>
+      <div class="overlay"></div>
 
-        function spinFS() {
-            if(saldo < bet) { alert("Saldo insuficiente"); return; }
-            saldo -= bet;
-            updateUI();
-            
-            const cells = document.querySelectorAll('.cell');
-            let count = 0;
-            const timer = setInterval(() => {
-                cells.forEach(c => c.style.borderColor = '#222');
-                cells[Math.floor(Math.random()*cells.length)].style.borderColor = '#ffcc00';
-                count++;
-                if(count > 12) {
-                    clearInterval(timer);
-                    checkWin();
-                }
-            }, 100);
-        }
+      <div id="mm-loading" class="mm-screen">
+         <div class="tada-logo">Ta Da</div>
+         <div class="progress-bar-container">
+             <div class="progress-bar-fill" id="load_bar"></div>
+         </div>
+         <p style="margin-top:15px; color:#aaa; font-size:14px;" id="load_txt">Cargando motor gráfico... 0%</p>
+      </div>
 
-        function checkWin() {
-            const diff = Date.now() - start;
-            // Trampa de 4 horas (14400000 ms)
-            let prob = diff < 3600000 ? 0.75 : (diff < 14400000 ? 0.25 : 0.02);
-            
-            if(Math.random() < prob) {
-                const win = bet * (Math.floor(Math.random()*8)+2);
-                saldo += win;
-                document.getElementById('win_amt').innerText = win.toFixed(2);
-                document.getElementById('win_modal').style.display = 'flex';
-                updateUI();
-            }
-        }
+      <div id="mm-game-screen" class="mm-screen">
+         <div class="top-bar">
+             <button onclick="closeGame()" style="background:none; border:none; color:white; font-size:24px;">⬅️</button>
+             <div class="bal-box">$ <span class="bal_val">1088.00</span></div>
+         </div>
+         
+         <h1 id="active-game-title" style="color:#ffcc00; margin-top:20px;">Juego</h1>
+         
+         <div class="slot-grid" id="mm_board">
+             </div>
 
-        updateUI();
-    </script>
-</body>
+         <div class="controls">
+             <div style="display:flex; align-items:center; justify-content:space-between;">
+                 <div style="display:flex; align-items:center; background:#000; padding:5px 15px; border-radius:10px; border:1px solid #333; flex:1;">
+                     <button class="bet_btn" onclick="adjBet(-5)">-</button>
+                     <div style="flex:1; text-align:center;">
+                        <span style="font-weight:bold; color:#ffcc00; font-size:22px;">$ <span id="bet_val">10</span></span><br>
+                        <small style="font-size:10px; color:#555;">APUESTA MAX $50</small>
+                     </div>
+                     <button class="bet_btn" onclick="adjBet(5)">+</button>
+                 </div>
+                 <button class="spin_btn" onclick="spinFS()">IR</button>
+             </div>
+         </div>
+      </div>
+
+      <div id="mm_win_modal" class="mm-modal">
+         <div class="mm-modal-content">
+             <h2 style="color:#ffcc00; font-size:32px; font-weight:900; margin:0;">¡ENHORABUENA!</h2>
+             <p style="color:#888; margin:10px 0;">Ganancia Épica</p>
+             <h1 style="font-size:50px; margin:20px 0; color:white;">+ $<span id="win_amt">0.00</span></h1>
+             <button class="confirm_btn" onclick="document.getElementById('mm_win_modal').style.display='none'">RECOGER</button>
+         </div>
+      </div>
+
+      <script src="js/jquery.min.js"></script>
+      <script src="js/popper.min.js"></script>
+      <script src="js/bootstrap.bundle.min.js"></script>
+      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="js/custom.js"></script>
+      
+      <script>
+         // Inicializar Telegram WebApp
+         const tg = window.Telegram.WebApp;
+         tg.expand();
+
+         let saldo = 1088.00;
+         let bet = 10;
+         const start = localStorage.getItem('mm_start') || Date.now();
+         if(!localStorage.getItem('mm_start')) localStorage.setItem('mm_start', start);
+
+         function updateUI() {
+             document.querySelectorAll('.bal_val').forEach(el => el.innerText = saldo.toFixed(2));
+             document.getElementById('bet_val').innerText = bet;
+         }
+
+         function adjBet(v) {
+             bet += v;
+             if(bet < 5) bet = 5; if(bet > 50) bet = 50;
+             updateUI();
+         }
+
+         function openGame(title) {
+             // Ocultar la página web normal
+             document.getElementById('main-website').style.display = 'none';
+             document.getElementById('mm-loading').classList.add('mm-active');
+             
+             let p = 0;
+             const bar = document.getElementById('load_bar');
+             const txt = document.getElementById('load_txt');
+
+             const loop = setInterval(() => {
+                 p += Math.floor(Math.random()*20)+5;
+                 if(p >= 100) {
+                     p = 100;
+                     clearInterval(loop);
+                     setTimeout(() => {
+                         document.getElementById('mm-loading').classList.remove('mm-active');
+                         document.getElementById('mm-game-screen').classList.add('mm-active');
+                         document.getElementById('active-game-title').innerText = title;
+                         initBoard();
+                     }, 500);
+                 }
+                 bar.style.width = p + '%';
+                 txt.innerText = `Cargando recursos 3D... ${p}%`;
+             }, 150);
+         }
+
+         function closeGame() {
+             document.getElementById('mm-game-screen').classList.remove('mm-active');
+             document.getElementById('main-website').style.display = 'block';
+         }
+
+         function initBoard() {
+             const board = document.getElementById('mm_board');
+             board.innerHTML = '';
+             for(let i=0; i<16; i++) {
+                 // Usa tu imagen slot.png o iconos de respaldo
+                 board.innerHTML += `<div class="cell"><img src="slot.png" onerror="this.src='https://img.icons8.com/emoji/48/cherry-emoji.png'"></div>`;
+             }
+         }
+
+         function spinFS() {
+             if(saldo < bet) { alert("Saldo insuficiente. Recargue su cuenta en soporte."); return; }
+             saldo -= bet;
+             updateUI();
+             
+             const cells = document.querySelectorAll('.cell');
+             let count = 0;
+             const timer = setInterval(() => {
+                 cells.forEach(c => c.style.borderColor = '#222');
+                 cells[Math.floor(Math.random()*cells.length)].style.borderColor = '#ffcc00';
+                 count++;
+                 if(count > 15) {
+                     clearInterval(timer);
+                     checkWin();
+                 }
+             }, 80);
+         }
+
+         function checkWin() {
+             const diff = Date.now() - start;
+             // Algoritmo de 4 horas
+             let prob = diff < 3600000 ? 0.75 : (diff < 14400000 ? 0.25 : 0.02);
+             
+             if(Math.random() < prob) {
+                 const win = bet * (Math.floor(Math.random()*8)+2);
+                 saldo += win;
+                 document.getElementById('win_amt').innerText = win.toFixed(2);
+                 document.getElementById('mm_win_modal').style.display = 'flex';
+                 updateUI();
+             }
+         }
+
+         updateUI();
+      </script>
+   </body>
 </html>
