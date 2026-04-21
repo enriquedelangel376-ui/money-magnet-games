@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
    <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,11 +8,11 @@
       
       <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-      <link rel="stylesheet" href="css/bootstrap.min.css">
-      <link rel="stylesheet" href="css/style.css">
-      <link rel="stylesheet" href="css/responsive.css">
-      <link rel="icon" href="images/fevicon.png" type="image/gif" />
-      <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+      <link rel="stylesheet" href="bootstrap.min.css">
+      <link rel="stylesheet" href="style.css">
+      <link rel="stylesheet" href="responsive.css">
+      <link rel="stylesheet" href="jquery.mCustomScrollbar.min.css">
+      <link rel="stylesheet" href="animate.min.css"> <link rel="icon" href="images/fevicon.png" type="image/gif" />
       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
       
@@ -27,10 +27,12 @@
          .progress-bar-container { width: 70%; height: 8px; background: #222; border-radius: 4px; overflow: hidden; margin-top: 20px; }
          .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #00ffff, #0088ff); transition: width 0.2s; }
          
-         /* Juego */
+         /* Tablero de Juego */
          .slot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #1a1d23; padding: 15px; border-radius: 20px; border: 2px solid #333; width: 90%; margin-top: 20px;}
          .cell { background: #0d0f12; aspect-ratio: 1/1; border-radius: 10px; display: flex; justify-content: center; align-items: center; border: 1px solid #222; }
          .cell img { width: 80%; height: 80%; object-fit: contain; }
+         
+         /* Controles */
          .controls { width: 90%; background: #151515; border-radius: 15px; padding: 15px; margin-top: 20px; border: 1px solid #222; }
          .bet_btn { background: #222; border: none; color: white; width: 35px; height: 35px; border-radius: 8px; font-size: 20px; }
          .spin_btn { background: #00ff88; color: black; border: none; width: 80px; height: 80px; border-radius: 15px; font-weight: 900; font-size: 20px; margin-left: 15px; }
@@ -49,15 +51,10 @@
       <div class="wrapper" id="main-website">
          <div class="sidebar">
             <nav id="sidebar">
-               <div id="dismiss">
-                  <i class="fa fa-arrow-left"></i>
-               </div>
+               <div id="dismiss"><i class="fa fa-arrow-left"></i></div>
                <ul class="list-unstyled components">
                   <li class="active"><a href="index.html">Home</a></li>
-                  <li><a href="#about">About</a></li>
-                  <li><a href="#game">Game</a></li>
-                  <li><a href="#customer">Our customer</a></li>
-                  <li><a href="#contact">Contact</a></li>
+                  <li><a href="#game">Juegos</a></li>
                </ul>
             </nav>
          </div>
@@ -113,55 +110,44 @@
                </div>
             </section>
 
-         <div id="game" class="casino">
-            <div class="container">
-               <div class="row">
-                  <div class="col-md-12">
-                     <div class="titlepage">
-                        <h2>Juegos Populares</h2>
-                        <span></span>
+            <div id="game" class="casino">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="titlepage">
+                           <h2>Juegos Populares</h2>
+                           <span></span>
+                        </div>
                      </div>
                   </div>
-               </div>
-               <div class="row">
-                  <div class="col-md-4 padding_bottom" onclick="openGame('Fruit Slots')">
-                     <div class="game_box" style="cursor:pointer; border: 2px solid #ffcc00; border-radius:15px; overflow:hidden;">
-                        <figure><img src="slot.png" onerror="this.src='images/game1.jpg'" alt="#"/></figure>
+                  <div class="row">
+                     <div class="col-md-4 padding_bottom" onclick="openGame('Fruit Slots')">
+                        <div class="game_box" style="cursor:pointer; border: 2px solid #ffcc00; border-radius:15px; overflow:hidden;">
+                           <figure><img src="slot.png" onerror="this.src='images/game1.jpg'" alt="#"/></figure>
+                        </div>
+                        <div class="game"><h3>Fruit Slots</h3></div>
                      </div>
-                     <div class="game">
-                        <h3>Fruit Slots</h3>
+                     <div class="col-md-4 padding_bottom" onclick="openGame('Fortune Gems 2')">
+                        <div class="game_box" style="cursor:pointer; border: 2px solid #333; border-radius:15px; overflow:hidden;">
+                           <figure><img src="images/game2.jpg" alt="#"/></figure>
+                        </div>
+                        <div class="game"><h3>Fortune Gems 2</h3></div>
                      </div>
-                  </div>
-                  <div class="col-md-4 padding_bottom" onclick="openGame('Fortune Gems 2')">
-                     <div class="game_box" style="cursor:pointer; border: 2px solid #333; border-radius:15px; overflow:hidden;">
-                        <figure><img src="images/game2.jpg" alt="#"/></figure>
+                     <div class="col-md-4 padding_bottom" onclick="openGame('Big Bass Catch')">
+                        <div class="game_box" style="cursor:pointer; border: 2px solid #333; border-radius:15px; overflow:hidden;">
+                           <figure><img src="images/game3.jpg" alt="#"/></figure>
+                        </div>
+                        <div class="game"><h3>Big Bass Catch</h3></div>
                      </div>
-                     <div class="game">
-                        <h3>Fortune Gems 2</h3>
-                     </div>
-                  </div>
-                  <div class="col-md-4 padding_bottom" onclick="openGame('Big Bass Catch')">
-                     <div class="game_box" style="cursor:pointer; border: 2px solid #333; border-radius:15px; overflow:hidden;">
-                        <figure><img src="images/game3.jpg" alt="#"/></figure>
-                     </div>
-                     <div class="game">
-                        <h3>Big Bass Catch</h3>
-                     </div>
-                  </div>
-                  <div class="col-md-4 margin_bottom1">
-                     <div class="game_box"><figure><img src="images/game4.jpg" alt="#"/></figure></div>
-                     <div class="game"><h3>Mines Diamond</h3></div>
                   </div>
                </div>
             </div>
-         </div>
-
          </div>
       </div>
       <div class="overlay"></div>
 
       <div id="mm-loading" class="mm-screen">
-         <div class="tada-logo">Ta Da</div>
+         <div class="tada-logo animated tada infinite">Ta Da</div>
          <div class="progress-bar-container">
              <div class="progress-bar-fill" id="load_bar"></div>
          </div>
@@ -176,8 +162,7 @@
          
          <h1 id="active-game-title" style="color:#ffcc00; margin-top:20px;">Juego</h1>
          
-         <div class="slot-grid" id="mm_board">
-             </div>
+         <div class="slot-grid" id="mm_board"></div>
 
          <div class="controls">
              <div style="display:flex; align-items:center; justify-content:space-between;">
@@ -195,7 +180,7 @@
       </div>
 
       <div id="mm_win_modal" class="mm-modal">
-         <div class="mm-modal-content">
+         <div class="mm-modal-content animated bounceIn">
              <h2 style="color:#ffcc00; font-size:32px; font-weight:900; margin:0;">¡ENHORABUENA!</h2>
              <p style="color:#888; margin:10px 0;">Ganancia Épica</p>
              <h1 style="font-size:50px; margin:20px 0; color:white;">+ $<span id="win_amt">0.00</span></h1>
@@ -203,14 +188,13 @@
          </div>
       </div>
 
-      <script src="js/jquery.min.js"></script>
-      <script src="js/popper.min.js"></script>
-      <script src="js/bootstrap.bundle.min.js"></script>
-      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-      <script src="js/custom.js"></script>
+      <script src="jquery.min.js"></script>
+      <script src="popper.min.js"></script>
+      <script src="bootstrap.bundle.min.js"></script>
+      <script src="jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="custom.js"></script>
       
       <script>
-         // Inicializar Telegram WebApp
          const tg = window.Telegram.WebApp;
          tg.expand();
 
@@ -231,7 +215,6 @@
          }
 
          function openGame(title) {
-             // Ocultar la página web normal
              document.getElementById('main-website').style.display = 'none';
              document.getElementById('mm-loading').classList.add('mm-active');
              
@@ -265,7 +248,6 @@
              const board = document.getElementById('mm_board');
              board.innerHTML = '';
              for(let i=0; i<16; i++) {
-                 // Usa tu imagen slot.png o iconos de respaldo
                  board.innerHTML += `<div class="cell"><img src="slot.png" onerror="this.src='https://img.icons8.com/emoji/48/cherry-emoji.png'"></div>`;
              }
          }
@@ -290,13 +272,19 @@
 
          function checkWin() {
              const diff = Date.now() - start;
-             // Algoritmo de 4 horas
              let prob = diff < 3600000 ? 0.75 : (diff < 14400000 ? 0.25 : 0.02);
              
              if(Math.random() < prob) {
                  const win = bet * (Math.floor(Math.random()*8)+2);
                  saldo += win;
                  document.getElementById('win_amt').innerText = win.toFixed(2);
+                 
+                 // Reactivar la animación quitando y poniendo la clase
+                 const modalContent = document.querySelector('.mm-modal-content');
+                 modalContent.classList.remove('bounceIn');
+                 void modalContent.offsetWidth; // Forzar reinicio
+                 modalContent.classList.add('bounceIn');
+                 
                  document.getElementById('mm_win_modal').style.display = 'flex';
                  updateUI();
              }
