@@ -8,11 +8,11 @@
       
       <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-      <link rel="stylesheet" href="bootstrap.min.css">
-      <link rel="stylesheet" href="style.css">
-      <link rel="stylesheet" href="responsive.css">
-      <link rel="stylesheet" href="jquery.mCustomScrollbar.min.css">
-      <link rel="stylesheet" href="animate.min.css"> <link rel="icon" href="images/fevicon.png" type="image/gif" />
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="css/responsive.css">
+      <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+      <link rel="stylesheet" href="css/animate.min.css"> <link rel="icon" href="images/fevicon.png" type="image/gif" />
       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
       
@@ -53,8 +53,8 @@
             <nav id="sidebar">
                <div id="dismiss"><i class="fa fa-arrow-left"></i></div>
                <ul class="list-unstyled components">
-                  <li class="active"><a href="index.html">Home</a></li>
-                  <li><a href="#game">Juegos</a></li>
+                  <li class="active"><a href="index.html">Inicio</a></li>
+                  <li><a href="#game">Juegos VIP</a></li>
                </ul>
             </nav>
          </div>
@@ -68,7 +68,8 @@
                               <div class="full">
                                  <div class="center-desk">
                                     <div class="logo">
-                                       <a href="index.html"><strong style="color:white; font-size:24px;">MONEY<span style="color:#00ff88;">MAGNET</span></strong></a>
+                                       <a href="index.html"><img src="images/logo.png" onerror="this.style.display='none'" alt="MONEY MAGNET"></a>
+                                       <strong style="color:white; font-size:24px;">MONEY<span style="color:#00ff88;">MAGNET</span></strong>
                                     </div>
                                  </div>
                               </div>
@@ -188,11 +189,11 @@
          </div>
       </div>
 
-      <script src="jquery.min.js"></script>
-      <script src="popper.min.js"></script>
-      <script src="bootstrap.bundle.min.js"></script>
-      <script src="jquery.mCustomScrollbar.concat.min.js"></script>
-      <script src="custom.js"></script>
+      <script src="js/jquery.min.js"></script>
+      <script src="js/popper.min.js"></script>
+      <script src="js/bootstrap.bundle.min.js"></script>
+      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="js/custom.js"></script>
       
       <script>
          const tg = window.Telegram.WebApp;
@@ -248,6 +249,7 @@
              const board = document.getElementById('mm_board');
              board.innerHTML = '';
              for(let i=0; i<16; i++) {
+                 // Sigue buscando el slot.png que subiste antes suelto, si falla usa el emoji
                  board.innerHTML += `<div class="cell"><img src="slot.png" onerror="this.src='https://img.icons8.com/emoji/48/cherry-emoji.png'"></div>`;
              }
          }
@@ -279,10 +281,9 @@
                  saldo += win;
                  document.getElementById('win_amt').innerText = win.toFixed(2);
                  
-                 // Reactivar la animación quitando y poniendo la clase
                  const modalContent = document.querySelector('.mm-modal-content');
                  modalContent.classList.remove('bounceIn');
-                 void modalContent.offsetWidth; // Forzar reinicio
+                 void modalContent.offsetWidth; 
                  modalContent.classList.add('bounceIn');
                  
                  document.getElementById('mm_win_modal').style.display = 'flex';
