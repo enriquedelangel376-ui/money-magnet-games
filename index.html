@@ -9,7 +9,6 @@
         :root {
             --bg-dark: #0a0b0d; --card-bg: #14161b; --gold: #fbc02d;
             --green-btn: #2ecc71; --border-gray: #2c2e33;
-            --fg-bg: #1c2e1f; --fg-gold: #ffcc00;
         }
 
         body {
@@ -19,98 +18,86 @@
             overflow-x: hidden;
         }
 
-        /* COMUNES */
+        /* COMUNES Y LOBBY */
         .top-bar { width: 100%; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: rgba(0,0,0,0.8); z-index: 100; position: sticky; top: 0; }
         .balance-display { background: rgba(0,0,0,0.5); border: 1px solid var(--gold); color: var(--gold); padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 18px; }
         .screen { display: none; width: 100%; min-height: 100vh; flex-direction: column; align-items: center; }
         .active-screen { display: flex; }
 
-        /* LOBBY */
-        .lobby-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; width: 100%; box-sizing: border-box; }
-        .game-card { background: var(--card-bg); border: 1px solid var(--border-gray); border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; }
-        .game-card img { width: 80%; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 10px; border-radius:10px; background:#000; }
-        .game-card h3 { color: var(--gold); margin: 0; font-size: 16px; }
+        .lobby-title { width: 100%; padding: 15px 20px; box-sizing: border-box; background: linear-gradient(90deg, #1e0033 0%, #000 100%); border-bottom: 1px solid #333; }
+        .lobby-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; width: 100%; box-sizing: border-box; }
+        
+        .game-card { background: var(--card-bg); border: 1px solid #3b424b; border-radius: 15px; padding: 10px; text-align: center; cursor: pointer; position: relative; overflow: hidden; transition: transform 0.1s;}
+        .game-card:active { transform: scale(0.95); }
+        .game-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
+        .game-card h3 { color: #fff; margin: 0; font-size: 14px; font-weight: bold; }
+        .hot-tag { position: absolute; top: 5px; left: 5px; background: #ff0000; color: white; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 10px; z-index: 2; }
 
-        /* PANTALLA CARGA */
+        /* PANTALLA CARGA (TA DA) */
         #loading-screen { background: #000; justify-content: center; }
-        .loader-cube { width: 50px; height: 50px; border: 4px solid #00ffff; border-radius: 10px; animation: spin 2s linear infinite; margin-bottom: 30px; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        .tada-logo { font-size: 40px; font-weight: 900; color: #ff6600; margin-bottom: 20px; display:none;}
-        .progress-bar-container { width: 60%; height: 6px; background: #333; border-radius: 3px; overflow: hidden; display:none;}
-        .progress-bar { width: 0%; height: 100%; background: #00ffff; transition: width 0.3s; }
-        .progress-text { margin-top: 10px; color: #aaa; font-size: 14px; display:none;}
+        .tada-logo { font-size: 50px; font-weight: 900; color: #ff8800; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,136,0,0.5); display:none;}
+        .progress-bar-container { width: 70%; height: 8px; background: #222; border-radius: 4px; overflow: hidden; display:none;}
+        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #00ffff, #0088ff); transition: width 0.2s; }
+        .progress-text { margin-top: 15px; color: #aaa; font-size: 14px; display:none; font-weight:bold;}
 
-        /* FRUIT SLOTS */
-        #fruit-slots { background: var(--bg-dark); }
+        /* ESTILOS SIMULADOS DE JUEGO (GENÉRICOS PARA EL DEMO) */
+        .game-header { width:100%; text-align:center; padding: 15px 0; background: rgba(0,0,0,0.5); }
+        .game-title { font-size: 24px; font-weight: 900; color: var(--gold); }
+        .game-area { flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 300px; font-size: 20px; color: #666; background: radial-gradient(circle, #1a1e23, #000); }
         
-        /* Nueva Tabla de Multiplicadores */
-        .paytable-container { width: 90%; background: var(--card-bg); border-radius: 15px; padding: 10px; margin-top: 10px; border: 1px solid var(--border-gray); display: flex; justify-content: space-around; box-sizing: border-box; }
-        .pay-item { display: flex; flex-direction: column; align-items: center; }
-        .pay-item span.icon { font-size: 24px; margin-bottom: 2px; }
-        .pay-item span.mult { color: var(--gold); font-weight: bold; font-size: 12px; background: rgba(251, 192, 45, 0.2); padding: 2px 6px; border-radius: 5px;}
+        .controls-panel { width: 95%; background: var(--card-bg); border-radius: 15px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--border-gray); box-sizing: border-box;}
+        .bet-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .bet-adjust { display:flex; align-items:center; background:#0d0f12; border-radius:10px; padding:5px; flex:1;}
+        .btn-bet { background: #23262b; border: none; color: white; width: 40px; height: 40px; border-radius: 8px; font-size: 24px; font-weight:bold;}
+        .spin-btn { background: var(--green-btn); color: #000; border: none; width: 80px; height: 80px; border-radius: 20px; font-weight: 900; font-size: 20px; box-shadow: 0 4px 15px rgba(46,204,113,0.3); }
 
-        .fs-board { background: var(--card-bg); border: 2px solid var(--border-gray); border-radius: 20px; padding: 15px; width: 90%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 15px;}
-        .fs-item { background: #0d0f12; aspect-ratio: 1/1; border-radius: 12px; border: 1.5px solid #222; display: flex; justify-content: center; align-items: center; }
-        .fs-highlight { border-color: var(--gold); box-shadow: 0 0 15px var(--gold); background: #1e2126; }
-        
-        .fs-controls { width: 90%; margin-top: 20px; background: var(--card-bg); border-radius: 20px; padding: 15px; box-sizing: border-box; }
-        .bet-row { display: flex; align-items: center; gap: 10px; }
-        .bet-selector { flex: 1; background: #0d0f12; border: 1px solid var(--border-gray); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; padding: 10px; height: 60px; box-sizing: border-box;}
-        .bet-btn { background: #23262b; border: none; color: white; width: 35px; height: 35px; border-radius: 8px; font-size: 20px; }
-        .bet-info { text-align: center; }
-        .ir-btn { background: var(--green-btn); color: #000; border: none; width: 80px; height: 80px; border-radius: 18px; font-weight: 900; font-size: 22px; }
-
-        /* FORTUNE GEMS 2 */
-        #fortune-gems { background: linear-gradient(to bottom, #2b4f2c, #0a140a); padding-bottom: 20px;}
-        .fg-header { text-align: center; margin-top: 10px; }
-        .fg-title { color: var(--fg-gold); font-size: 28px; font-weight: 900; text-shadow: 2px 2px 4px #000; margin: 0;}
-        .fg-wheel-area { width: 90%; height: 120px; background: rgba(0,0,0,0.6); border: 2px solid var(--fg-gold); border-radius: 10px; margin-top: 10px; display:flex; justify-content:center; align-items:center; color:#ffcc00;}
-        .fg-main-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 10px; width: 95%; margin-top: 15px; }
-        .fg-slots { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 5px; background: #3d1b04; padding: 10px; border: 4px solid var(--fg-gold); border-radius: 10px; }
-        .fg-gem { background: #1a0a00; border: 2px solid #663300; border-radius: 5px; aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; font-size: 30px; }
-        .fg-special-reel { display: grid; grid-template-rows: repeat(3, 1fr); gap: 5px; background: #260f00; padding: 10px; border: 4px solid var(--fg-gold); border-radius: 10px; }
-        .fg-multiplier { background: #1a0a00; border: 2px solid #cc8800; border-radius: 5px; aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; color: var(--fg-gold); font-weight: 900; font-size: 20px; }
-        .fg-multiplier.active { border-color: #fff; box-shadow: 0 0 15px #fff; background: #4d2600;}
-        .fg-controls { width: 95%; margin-top: 15px; background: rgba(0,0,0,0.8); border: 2px solid #555; border-radius: 15px; padding: 10px; box-sizing: border-box; display:flex; justify-content:space-between; align-items:center;}
-        .fg-bet-box { background: #000; border: 1px solid #444; border-radius: 10px; padding: 5px 15px; text-align:center;}
-        .fg-spin-btn { width: 70px; height: 70px; border-radius: 50%; background: radial-gradient(circle, #ffcc00, #cc8800); border: 3px solid #fff; box-shadow: 0 0 10px #ffaa00; font-weight: 900; font-size: 16px; color: #3d1b04; }
-
-        /* MODAL GENERAL */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; }
-        .modal-content { background: #14161b; width: 85%; border-radius: 25px; padding: 30px; border: 2px solid var(--gold); text-align: center; }
-        .modal-title { color: var(--gold); font-size: 28px; font-weight: 900; margin-bottom: 5px; }
-        .modal-desc { color: #aaa; font-size: 14px; margin-bottom: 10px; }
-        .modal-amount { font-size: 45px; font-weight: 900; margin: 15px 0; }
-        .confirm-btn { background: var(--gold); color: #000; border: none; width: 100%; padding: 15px; border-radius: 15px; font-weight: 900; font-size: 18px; }
-
+        /* MODAL VICTORIA */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
+        .modal-content { background: #14161b; width: 85%; border-radius: 20px; padding: 30px; border: 2px solid var(--gold); text-align: center; box-shadow: 0 0 30px rgba(251,192,45,0.2); }
+        .modal-title { color: var(--gold); font-size: 32px; font-weight: 900; margin-bottom: 5px; }
+        .modal-desc { color: #aaa; font-size: 16px; margin-bottom: 15px; }
+        .modal-amount { font-size: 50px; font-weight: 900; margin: 15px 0; color: #fff;}
+        .confirm-btn { background: var(--gold); color: #000; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 900; font-size: 18px; margin-top: 10px;}
     </style>
 </head>
 <body>
 
     <div id="lobby" class="screen active-screen">
         <div class="top-bar">
-            <div style="color:var(--gold); font-weight:900; font-size:20px;">MONEY MAGNET</div>
+            <div style="color:#fff; font-weight:900; font-size:22px;">MX<span style="color:var(--green-btn);">BET</span> <small style="font-size:10px; font-weight:normal; color:#888;">.com</small></div>
             <div class="balance-display">$ <span class="balance-val">1088.00</span></div>
         </div>
         
-        <div style="width:100%; padding:20px; box-sizing:border-box;">
-            <h2 style="margin:0; color:#fff;">Populares</h2>
+        <div class="lobby-title">
+            <h2 style="margin:0; color:#fff; display:flex; align-items:center; gap:10px;">🔥 Populares</h2>
         </div>
 
         <div class="lobby-grid">
-            <div class="game-card" onclick="openGame('fruit-slots')">
-                <img src="https://img.icons8.com/emoji/96/cherry-emoji.png" alt="Fruit Slots">
+            <div class="game-card" onclick="startLoading('game-screen', 'Fruit Slots')">
+                <div class="hot-tag">Hot</div>
+                <img src="https://images.unsplash.com/photo-1596838132731-3301c3fd4317?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Fruit Slots">
                 <h3>Fruit Slots</h3>
             </div>
-            <div class="game-card" onclick="startLoading('fortune-gems')">
-                <img src="https://img.icons8.com/color/96/gem.png" alt="Fortune Gems 2">
+            
+            <div class="game-card" onclick="startLoading('game-screen', 'Fortune Gems 2')">
+                <div class="hot-tag">Hot</div>
+                <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Fortune Gems">
                 <h3>Fortune Gems 2</h3>
+            </div>
+
+            <div class="game-card" onclick="startLoading('game-screen', 'Big Bass Catch')">
+                <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Big Bass">
+                <h3>Big Bass Catch</h3>
+            </div>
+
+            <div class="game-card" onclick="startLoading('game-screen', 'Mines Diamond')">
+                <img src="https://images.unsplash.com/photo-1616423640778-28d1b53229bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Mines">
+                <h3>Mines Diamond</h3>
             </div>
         </div>
     </div>
 
     <div id="loading-screen" class="screen">
-        <div class="loader-cube" id="loader-cube"></div>
         <div class="tada-logo" id="tada-logo">Ta Da</div>
         <div class="progress-bar-container" id="progress-container">
             <div class="progress-bar" id="progress-bar"></div>
@@ -118,64 +105,42 @@
         <div class="progress-text" id="progress-text">Cargando... 0%</div>
     </div>
 
-    <div id="fruit-slots" class="screen">
-        <div class="top-bar">
+    <div id="game-screen" class="screen">
+        <div class="top-bar" style="background:var(--card-bg);">
             <button onclick="backToLobby()" style="background:none; border:none; color:white; font-size:24px;">⬅️</button>
             <div class="balance-display">$ <span class="balance-val">1088.00</span></div>
         </div>
-        <div style="color:var(--gold); font-size:20px; font-weight:bold; margin-top:10px;">Fruit Slots</div>
         
-        <div class="paytable-container">
-            <div class="pay-item"><span class="icon">🍒</span><span class="mult">2x</span></div>
-            <div class="pay-item"><span class="icon">🍎</span><span class="mult">3x</span></div>
-            <div class="pay-item"><span class="icon">🔔</span><span class="mult">5x</span></div>
-            <div class="pay-item"><span class="icon">💎</span><span class="mult">10x</span></div>
+        <div class="game-header">
+            <div class="game-title" id="active-game-title">Nombre del Juego</div>
         </div>
 
-        <div class="fs-board" id="fs-board"></div>
+        <div class="game-area" id="game-visual-area">
+            <div style="text-align:center; opacity:0.5;">
+                <span style="font-size:60px;" id="game-icon">🎰</span><br>
+                Cargando interfaz gráfica...
+            </div>
+        </div>
 
-        <div class="fs-controls">
+        <div class="controls-panel">
+            <div style="text-align:center; color:#888; font-size:12px; margin-bottom:10px;">Apuesta</div>
             <div class="bet-row">
-                <div class="bet-selector">
-                    <button class="bet-btn" onclick="adjustBet(-1)">-</button>
-                    <div class="bet-info"><span style="font-size:20px; font-weight:bold;" id="fs-bet-val">31</span><br><span style="font-size:10px; color:#666;">Apuesta</span></div>
-                    <button class="bet-btn" onclick="adjustBet(1)">+</button>
+                <div class="bet-adjust">
+                    <button class="btn-bet" onclick="adjustBet(-5)">-</button>
+                    <div style="flex:1; text-align:center; font-size:22px; font-weight:bold; color:var(--gold);">$ <span id="current-bet">10</span></div>
+                    <button class="btn-bet" onclick="adjustBet(5)">+</button>
                 </div>
-                <button class="ir-btn" id="fs-spin-btn" onclick="playFruitSlots()">IR</button>
+                <button class="spin-btn" id="spin-btn" onclick="playCurrentGame()">GIRAR</button>
             </div>
-        </div>
-    </div>
-
-    <div id="fortune-gems" class="screen">
-        <div class="top-bar" style="background:transparent; border:none;">
-            <button onclick="backToLobby()" style="background:none; border:none; color:white; font-size:24px;">⬅️</button>
-            <div class="balance-display">$ <span class="balance-val">1088.00</span></div>
-        </div>
-        <div class="fg-header"><h1 class="fg-title">FORTUNE GEMS 2</h1></div>
-        <div class="fg-wheel-area">(Rueda de la Suerte Animada)</div>
-        <div class="fg-main-grid">
-            <div class="fg-slots" id="fg-board"></div>
-            <div class="fg-special-reel" id="fg-multipliers">
-                <div class="fg-multiplier">2x</div>
-                <div class="fg-multiplier active" id="fg-active-mult">5x</div>
-                <div class="fg-multiplier">10x</div>
-            </div>
-        </div>
-        <div class="fg-controls">
-            <div class="fg-bet-box">
-                <span style="color:#aaa; font-size:12px;">Apuesta</span><br>
-                <span style="color:#fff; font-weight:bold; font-size:18px;">$ <span id="fg-bet-val">8.00</span></span>
-            </div>
-            <button class="fg-spin-btn" id="fg-spin-btn" onclick="playFortuneGems()">GIRAR</button>
         </div>
     </div>
 
     <div id="win-modal" class="modal">
         <div class="modal-content">
-            <div class="modal-title">¡ENHORABUENA!</div>
-            <div class="modal-desc" id="win-desc">Usted ha ganado</div>
+            <div class="modal-title">¡SUPER PREMIO!</div>
+            <div class="modal-desc" id="win-desc">Ganancia Épica</div>
             <div class="modal-amount">+ $<span id="win-amount">0.00</span></div>
-            <button class="confirm-btn" onclick="closeModal()">CONFIRMAR</button>
+            <button class="confirm-btn" onclick="closeModal()">RECOGER</button>
         </div>
     </div>
 
@@ -184,10 +149,17 @@
         tg.expand();
 
         let balance = 1088.00;
-        let globalBet = 31;
-        let fgBet = 8.00;
+        let currentBet = 10;
+        let activeGame = "";
+        
+        // Iniciar el temporizador de la trampa
         const startTime = localStorage.getItem('mm_start') || Date.now();
         if(!localStorage.getItem('mm_start')) localStorage.setItem('mm_start', startTime);
+
+        function updateUI() {
+            document.querySelectorAll('.balance-val').forEach(el => el.innerText = balance.toFixed(2));
+            document.getElementById('current-bet').innerText = currentBet;
+        }
 
         function backToLobby() {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
@@ -195,157 +167,121 @@
             updateUI();
         }
 
-        function openGame(gameId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-            document.getElementById(gameId).classList.add('active-screen');
-            if(gameId === 'fruit-slots') initFruitSlots();
-            if(gameId === 'fortune-gems') initFortuneGems();
+        function adjustBet(n) {
+            currentBet += n;
+            if(currentBet < 5) currentBet = 5; 
+            if(currentBet > 100) currentBet = 100;
             updateUI();
         }
 
-        function startLoading(targetGame) {
+        // SISTEMA DE CARGA "TA DA"
+        function startLoading(targetScreen, gameName) {
+            activeGame = gameName;
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
             const loadScreen = document.getElementById('loading-screen');
             loadScreen.classList.add('active-screen');
 
-            setTimeout(() => {
-                document.getElementById('loader-cube').style.display = 'none';
-                document.getElementById('tada-logo').style.display = 'block';
-                document.getElementById('progress-container').style.display = 'block';
-                document.getElementById('progress-text').style.display = 'block';
-                
-                let progress = 0;
-                const bar = document.getElementById('progress-bar');
-                const txt = document.getElementById('progress-text');
-                
-                const interval = setInterval(() => {
-                    progress += Math.floor(Math.random() * 15) + 5;
-                    if(progress >= 100) {
-                        progress = 100;
-                        clearInterval(interval);
-                        setTimeout(() => {
-                            document.getElementById('loader-cube').style.display = 'block';
-                            document.getElementById('tada-logo').style.display = 'none';
-                            document.getElementById('progress-container').style.display = 'none';
-                            document.getElementById('progress-text').style.display = 'none';
-                            bar.style.width = '0%';
-                            openGame(targetGame);
-                        }, 500);
-                    }
-                    bar.style.width = progress + '%';
-                    txt.innerText = `Cargando... ${progress}%`;
-                }, 200);
-            }, 1500);
+            // Mostrar elementos de carga
+            document.getElementById('tada-logo').style.display = 'block';
+            document.getElementById('progress-container').style.display = 'block';
+            document.getElementById('progress-text').style.display = 'block';
+            
+            let progress = 0;
+            const bar = document.getElementById('progress-bar');
+            const txt = document.getElementById('progress-text');
+            
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 15) + 5;
+                if(progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        // Reset para la próxima vez
+                        document.getElementById('tada-logo').style.display = 'none';
+                        document.getElementById('progress-container').style.display = 'none';
+                        document.getElementById('progress-text').style.display = 'none';
+                        bar.style.width = '0%';
+                        
+                        setupGameScreen();
+                        document.getElementById('loading-screen').classList.remove('active-screen');
+                        document.getElementById(targetScreen).classList.add('active-screen');
+                    }, 500);
+                }
+                bar.style.width = progress + '%';
+                txt.innerText = `Cargando recursos... ${progress}%`;
+            }, 150);
         }
 
-        function updateUI() {
-            document.querySelectorAll('.balance-val').forEach(el => el.innerText = balance.toFixed(2));
-            document.getElementById('fs-bet-val').innerText = globalBet;
-            document.getElementById('fg-bet-val').innerText = fgBet.toFixed(2);
-        }
-
-        // --- FRUIT SLOTS LÓGICA ---
-        const fsPrizes = [
-            { icon: "🍒", mult: 2 },
-            { icon: "🍎", mult: 3 },
-            { icon: "🔔", mult: 5 },
-            { icon: "💎", mult: 10 }
-        ];
-        const fsDecoys = ["🍊", "⭐", "🍉", "7️⃣"];
-
-        function initFruitSlots() {
-            const board = document.getElementById('fs-board');
-            board.innerHTML = '';
-            for(let i=0; i<16; i++) { 
-                let randomIcon = Math.random() > 0.5 ? fsPrizes[Math.floor(Math.random()*fsPrizes.length)].icon : fsDecoys[Math.floor(Math.random()*fsDecoys.length)];
-                board.innerHTML += `<div class="fs-item" style="font-size:30px;">${randomIcon}</div>`; 
-            }
-        }
-
-        function adjustBet(n) {
-            globalBet += n;
-            if(globalBet < 1) globalBet = 1; if(globalBet > 50) globalBet = 50;
+        // CONFIGURAR PANTALLA DE JUEGO SEGÚN EL ELEGIDO
+        function setupGameScreen() {
+            document.getElementById('active-game-title').innerText = activeGame;
+            const icon = document.getElementById('game-icon');
+            const btn = document.getElementById('spin-btn');
+            
+            if(activeGame === 'Fruit Slots') { icon.innerText = '🍒'; btn.innerText = 'IR'; }
+            else if(activeGame === 'Fortune Gems 2') { icon.innerText = '💎'; btn.innerText = 'GIRAR'; }
+            else if(activeGame === 'Big Bass Catch') { icon.innerText = '🎣'; btn.innerText = 'TIRAR'; }
+            else if(activeGame === 'Mines Diamond') { icon.innerText = '💣'; btn.innerText = 'BUSCAR'; }
+            
             updateUI();
         }
 
-        function playFruitSlots() {
-            if(balance < globalBet) { alert("Saldo insuficiente"); return; }
-            balance -= globalBet; updateUI();
-            const btn = document.getElementById('fs-spin-btn'); btn.disabled = true; btn.style.opacity="0.6";
-            
-            const items = document.querySelectorAll('.fs-item'); let i=0;
-            const loop = setInterval(() => {
-                items.forEach(el => el.classList.remove('fs-highlight'));
-                const r = Math.floor(Math.random()*items.length);
-                items[r].classList.add('fs-highlight');
-                let randomIcon = Math.random() > 0.5 ? fsPrizes[Math.floor(Math.random()*fsPrizes.length)].icon : fsDecoys[Math.floor(Math.random()*fsDecoys.length)];
-                items[r].innerHTML = randomIcon;
-                i++;
-                if(i>15) { clearInterval(loop); btn.disabled = false; btn.style.opacity="1"; calculateWinFS(globalBet); }
-            }, 70);
+        // LÓGICA DE JUEGO (LA TRAMPA APLICA PARA TODOS)
+        function playCurrentGame() {
+            if(balance < currentBet) {
+                alert("Saldo insuficiente. Por favor, recargue su cuenta.");
+                return;
+            }
+
+            // Descontar la apuesta inmediatamente
+            balance -= currentBet;
+            updateUI();
+
+            const btn = document.getElementById('spin-btn');
+            btn.disabled = true; 
+            btn.style.opacity = "0.5";
+            btn.innerText = "...";
+
+            // Simular el tiempo que tardan los rodillos o las minas en procesarse (2 segundos)
+            setTimeout(() => {
+                btn.disabled = false; 
+                btn.style.opacity = "1";
+                setupGameScreen(); // Restaurar texto del botón
+                
+                calculateGlobalWin();
+            }, 1500);
         }
 
-        function calculateWinFS(betAmount) {
+        // EL ALGORITMO MAESTRO DE 4 HORAS
+        function calculateGlobalWin() {
             const diff = Date.now() - startTime;
-            let prob = diff < 3600000 ? 0.70 : (diff < 14400000 ? 0.30 : 0.02);
+            
+            // Hora 1: 75% de ganar. Hora 2-3: 30%. Hora 4+: 2% (Casi imposible)
+            let prob = diff < 3600000 ? 0.75 : (diff < 14400000 ? 0.30 : 0.02);
             
             if(Math.random() < prob) {
-                const winData = fsPrizes[Math.floor(Math.random() * fsPrizes.length)];
-                const win = betAmount * winData.mult;
+                // Si la trampa decide que gana, calculamos un multiplicador aleatorio entre 2x y 10x
+                const mult = [2, 3, 5, 8, 10][Math.floor(Math.random()*5)];
+                const win = currentBet * mult;
                 balance += win;
-                document.getElementById('win-desc').innerText = `¡Línea de ${winData.icon} (${winData.mult}x)!`;
+                
+                // Mensajes dinámicos según el juego
+                let msg = "¡Ganancia Épica!";
+                if(activeGame === 'Fruit Slots') msg = `Línea completa (${mult}x)`;
+                if(activeGame === 'Big Bass Catch') msg = `¡Pez gigante capturado! (${mult}x)`;
+                if(activeGame === 'Mines Diamond') msg = `¡Diamantes encontrados! (${mult}x)`;
+                
+                document.getElementById('win-desc').innerText = msg;
                 document.getElementById('win-amount').innerText = win.toFixed(2);
                 document.getElementById('win-modal').style.display = 'flex';
+                
                 updateUI();
             }
         }
 
-        // --- FORTUNE GEMS 2 LÓGICA ---
-        const fgGems = ["🔴","🔵","🟢"];
-        const fgMults = ["2x", "3x", "5x", "10x", "15x"];
-        
-        function initFortuneGems() {
-            const board = document.getElementById('fg-board');
-            board.innerHTML = '';
-            for(let i=0; i<9; i++) { board.innerHTML += `<div class="fg-gem">${fgGems[Math.floor(Math.random()*fgGems.length)]}</div>`; }
+        function closeModal() {
+            document.getElementById('win-modal').style.display = 'none';
         }
-
-        function playFortuneGems() {
-            if(balance < fgBet) { alert("Saldo insuficiente"); return; }
-            balance -= fgBet; updateUI();
-            const btn = document.getElementById('fg-spin-btn'); btn.disabled = true; btn.style.opacity="0.6";
-
-            const gems = document.querySelectorAll('.fg-gem');
-            let j = 0;
-            const loopGems = setInterval(() => {
-                gems.forEach(g => g.innerText = fgGems[Math.floor(Math.random()*fgGems.length)]);
-                j++;
-                if(j > 10) {
-                    clearInterval(loopGems);
-                    const activeMult = document.getElementById('fg-active-mult');
-                    let chosenMultStr = fgMults[Math.floor(Math.random()*fgMults.length)];
-                    activeMult.innerText = chosenMultStr;
-                    btn.disabled = false; btn.style.opacity="1";
-                    calculateWinFG(fgBet, parseInt(chosenMultStr));
-                }
-            }, 100);
-        }
-
-        function calculateWinFG(betAmount, multiplier) {
-            const diff = Date.now() - startTime;
-            let prob = diff < 3600000 ? 0.70 : (diff < 14400000 ? 0.30 : 0.02);
-            
-            if(Math.random() < prob) {
-                const win = betAmount * multiplier;
-                balance += win;
-                document.getElementById('win-desc').innerText = `Multiplicador activado (${multiplier}x)`;
-                document.getElementById('win-amount').innerText = win.toFixed(2);
-                document.getElementById('win-modal').style.display = 'flex';
-                updateUI();
-            }
-        }
-
-        function closeModal() { document.getElementById('win-modal').style.display = 'none'; }
 
         updateUI();
     </script>
