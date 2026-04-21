@@ -3,144 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>MONEY MAGNET GAMES</title>
+    <title>MONEY MAGNET GAMES 💰</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-dark: #0a0b0d; --card-bg: #14161b; --gold: #fbc02d;
-            --green-btn: #2ecc71; --border-gray: #2c2e33;
+            --bg-dark: #0a0b0d;
+            --card-bg: #14161b;
+            --gold: #fbc02d;
+            --green-btn: #2ecc71;
+            --border-gray: #2c2e33;
         }
 
         body {
-            background-color: var(--bg-dark); color: white;
-            font-family: 'Roboto', sans-serif; margin: 0; padding: 0;
-            user-select: none; -webkit-tap-highlight-color: transparent;
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            margin: 0; padding: 0;
+            user-select: none;
             overflow-x: hidden;
         }
 
-        /* COMUNES Y LOBBY */
-        .top-bar { width: 100%; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: rgba(0,0,0,0.8); z-index: 100; position: sticky; top: 0; }
-        .balance-display { background: rgba(0,0,0,0.5); border: 1px solid var(--gold); color: var(--gold); padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 18px; }
+        /* --- TOP BAR ESTILO APP --- */
+        .top-bar {
+            width: 100%; padding: 12px 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: #1a1d23; border-bottom: 1px solid #333;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo-text { font-weight: 900; font-size: 18px; color: #fff; }
+        .logo-text span { color: var(--green-btn); }
+        .balance-display {
+            background: #000; border: 1.5px solid var(--gold);
+            color: var(--gold); padding: 4px 12px; border-radius: 20px;
+            font-weight: bold; font-size: 16px;
+        }
+
+        /* --- LOBBY (MENÚ DE JUEGOS) --- */
         .screen { display: none; width: 100%; min-height: 100vh; flex-direction: column; align-items: center; }
         .active-screen { display: flex; }
 
-        .lobby-title { width: 100%; padding: 15px 20px; box-sizing: border-box; background: linear-gradient(90deg, #1e0033 0%, #000 100%); border-bottom: 1px solid #333; }
-        .lobby-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; width: 100%; box-sizing: border-box; }
-        
-        .game-card { background: var(--card-bg); border: 1px solid #3b424b; border-radius: 15px; padding: 10px; text-align: center; cursor: pointer; position: relative; overflow: hidden; transition: transform 0.1s;}
+        .banner-promo {
+            width: 90%; background: linear-gradient(45deg, #1e0033, #4a148c);
+            margin: 15px 0; border-radius: 15px; padding: 20px;
+            text-align: left; border: 1px solid #6a1b9a;
+        }
+
+        .game-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 12px; width: 92%; padding-bottom: 30px;
+        }
+        .game-card {
+            background: var(--card-bg); border: 1px solid var(--border-gray);
+            border-radius: 15px; padding: 10px; text-align: center;
+            position: relative; transition: transform 0.1s;
+        }
         .game-card:active { transform: scale(0.95); }
-        .game-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
-        .game-card h3 { color: #fff; margin: 0; font-size: 14px; font-weight: bold; }
-        .hot-tag { position: absolute; top: 5px; left: 5px; background: #ff0000; color: white; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 10px; z-index: 2; }
+        .game-card img { width: 100%; aspect-ratio: 1/1; border-radius: 10px; object-fit: cover; margin-bottom: 8px; }
+        .game-card h4 { margin: 0; font-size: 13px; color: #eee; }
+        .hot-label {
+            position: absolute; top: 5px; left: 5px; background: #ff3d00;
+            font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 5px;
+        }
 
-        /* PANTALLA CARGA (TA DA) */
+        /* --- PANTALLA DE CARGA (TA DA) --- */
         #loading-screen { background: #000; justify-content: center; }
-        .tada-logo { font-size: 50px; font-weight: 900; color: #ff8800; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,136,0,0.5); display:none;}
-        .progress-bar-container { width: 70%; height: 8px; background: #222; border-radius: 4px; overflow: hidden; display:none;}
-        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #00ffff, #0088ff); transition: width 0.2s; }
-        .progress-text { margin-top: 15px; color: #aaa; font-size: 14px; display:none; font-weight:bold;}
+        .tada-logo { font-size: 45px; font-weight: 900; color: #ff6600; margin-bottom: 20px; }
+        .progress-container { width: 65%; height: 6px; background: #222; border-radius: 3px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: #00ffff; transition: width 0.2s; }
 
-        /* ESTILOS SIMULADOS DE JUEGO (GENÉRICOS PARA EL DEMO) */
-        .game-header { width:100%; text-align:center; padding: 15px 0; background: rgba(0,0,0,0.5); }
-        .game-title { font-size: 24px; font-weight: 900; color: var(--gold); }
-        .game-area { flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 300px; font-size: 20px; color: #666; background: radial-gradient(circle, #1a1e23, #000); }
-        
-        .controls-panel { width: 95%; background: var(--card-bg); border-radius: 15px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--border-gray); box-sizing: border-box;}
-        .bet-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-        .bet-adjust { display:flex; align-items:center; background:#0d0f12; border-radius:10px; padding:5px; flex:1;}
-        .btn-bet { background: #23262b; border: none; color: white; width: 40px; height: 40px; border-radius: 8px; font-size: 24px; font-weight:bold;}
-        .spin-btn { background: var(--green-btn); color: #000; border: none; width: 80px; height: 80px; border-radius: 20px; font-weight: 900; font-size: 20px; box-shadow: 0 4px 15px rgba(46,204,113,0.3); }
+        /* --- INTERFAZ FRUIT SLOTS REAL --- */
+        .slot-board {
+            width: 90%; background: #14161b; border: 2px solid #2c2e33;
+            border-radius: 20px; padding: 12px; margin-top: 15px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+        }
+        .slot-cell {
+            background: #0d0f12; aspect-ratio: 1/1; border-radius: 10px;
+            border: 1px solid #222; display: flex; justify-content: center; align-items: center;
+        }
+        .slot-cell img { width: 80%; height: 80%; object-fit: contain; }
+        .win-glow { border-color: var(--gold); box-shadow: 0 0 10px var(--gold); background: #23272e; }
 
-        /* MODAL VICTORIA */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
-        .modal-content { background: #14161b; width: 85%; border-radius: 20px; padding: 30px; border: 2px solid var(--gold); text-align: center; box-shadow: 0 0 30px rgba(251,192,45,0.2); }
-        .modal-title { color: var(--gold); font-size: 32px; font-weight: 900; margin-bottom: 5px; }
-        .modal-desc { color: #aaa; font-size: 16px; margin-bottom: 15px; }
-        .modal-amount { font-size: 50px; font-weight: 900; margin: 15px 0; color: #fff;}
-        .confirm-btn { background: var(--gold); color: #000; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 900; font-size: 18px; margin-top: 10px;}
+        /* --- CONTROLES INFERIORES --- */
+        .control-bar {
+            width: 92%; background: #1a1d23; border-radius: 18px;
+            margin: 20px 0; padding: 15px; box-sizing: border-box;
+            border: 1px solid #333;
+        }
+        .bet-adjuster {
+            display: flex; align-items: center; background: #0d0f12;
+            border-radius: 12px; padding: 8px; flex: 1; border: 1px solid #222;
+        }
+        .btn-math { background: #23262b; border: none; color: white; width: 35px; height: 35px; border-radius: 8px; font-size: 20px; }
+        .ir-button {
+            background: var(--green-btn); color: #000; border: none;
+            width: 75px; height: 75px; border-radius: 15px;
+            font-weight: 900; font-size: 20px; margin-left: 10px;
+        }
+
+        /* --- MODAL DE PREMIO --- */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: #14161b; width: 80%; border-radius: 25px;
+            padding: 30px; border: 2px solid var(--gold); text-align: center;
+        }
+        .confirm-btn {
+            background: var(--gold); color: #000; border: none;
+            width: 100%; padding: 14px; border-radius: 12px;
+            font-weight: 900; font-size: 18px; margin-top: 15px;
+        }
     </style>
 </head>
 <body>
 
     <div id="lobby" class="screen active-screen">
         <div class="top-bar">
-            <div style="color:#fff; font-weight:900; font-size:22px;">MX<span style="color:var(--green-btn);">BET</span> <small style="font-size:10px; font-weight:normal; color:#888;">.com</small></div>
-            <div class="balance-display">$ <span class="balance-val">1088.00</span></div>
-        </div>
-        
-        <div class="lobby-title">
-            <h2 style="margin:0; color:#fff; display:flex; align-items:center; gap:10px;">🔥 Populares</h2>
+            <div class="logo-text">MONEY<span>MAGNET</span></div>
+            <div class="balance-display">$ <span class="bal-txt">1088.00</span></div>
         </div>
 
-        <div class="lobby-grid">
-            <div class="game-card" onclick="startLoading('game-screen', 'Fruit Slots')">
-                <div class="hot-tag">Hot</div>
-                <img src="https://images.unsplash.com/photo-1596838132731-3301c3fd4317?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Fruit Slots">
-                <h3>Fruit Slots</h3>
-            </div>
-            
-            <div class="game-card" onclick="startLoading('game-screen', 'Fortune Gems 2')">
-                <div class="hot-tag">Hot</div>
-                <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Fortune Gems">
-                <h3>Fortune Gems 2</h3>
-            </div>
+        <div class="banner-promo">
+            <h3 style="margin:0;">¡Bono de Bienvenida!</h3>
+            <p style="margin:5px 0 0; font-size:12px; opacity:0.8;">Recibe +20% en tu primer depósito hoy.</p>
+        </div>
 
-            <div class="game-card" onclick="startLoading('game-screen', 'Big Bass Catch')">
-                <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Big Bass">
-                <h3>Big Bass Catch</h3>
+        <div class="game-grid">
+            <div class="game-card" onclick="startLoading('fruit-slots', 'Fruit Slots')">
+                <div class="hot-label">HOT</div>
+                <img src="slot.png"> <h4>Fruit Slots</h4>
             </div>
-
-            <div class="game-card" onclick="startLoading('game-screen', 'Mines Diamond')">
-                <img src="https://images.unsplash.com/photo-1616423640778-28d1b53229bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Mines">
-                <h3>Mines Diamond</h3>
+            <div class="game-card" onclick="startLoading('fruit-slots', 'Fortune Gems 2')">
+                <img src="https://img.icons8.com/color/96/gem.png">
+                <h4>Fortune Gems 2</h4>
+            </div>
+            <div class="game-card" onclick="alert('Próximamente...')">
+                <img src="https://img.icons8.com/color/96/diamond--v1.png">
+                <h4>Mines Diamond</h4>
+            </div>
+            <div class="game-card" onclick="alert('Próximamente...')">
+                <img src="https://img.icons8.com/color/96/fish.png">
+                <h4>Big Bass Catch</h4>
             </div>
         </div>
     </div>
 
     <div id="loading-screen" class="screen">
-        <div class="tada-logo" id="tada-logo">Ta Da</div>
-        <div class="progress-bar-container" id="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
+        <div class="tada-logo">Ta Da</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="p-bar"></div>
         </div>
-        <div class="progress-text" id="progress-text">Cargando... 0%</div>
+        <p id="p-txt" style="margin-top:10px; font-size:12px; color:#666;">Cargando... 0%</p>
     </div>
 
-    <div id="game-screen" class="screen">
-        <div class="top-bar" style="background:var(--card-bg);">
-            <button onclick="backToLobby()" style="background:none; border:none; color:white; font-size:24px;">⬅️</button>
-            <div class="balance-display">$ <span class="balance-val">1088.00</span></div>
+    <div id="fruit-slots" class="screen">
+        <div class="top-bar">
+            <button onclick="location.reload()" style="background:none; border:none; color:white; font-size:24px;">⬅️</button>
+            <div class="balance-display">$ <span class="bal-txt">1088.00</span></div>
         </div>
+        <h2 style="color:var(--gold); margin: 15px 0 5px;">Fruit Slots</h2>
         
-        <div class="game-header">
-            <div class="game-title" id="active-game-title">Nombre del Juego</div>
-        </div>
-
-        <div class="game-area" id="game-visual-area">
-            <div style="text-align:center; opacity:0.5;">
-                <span style="font-size:60px;" id="game-icon">🎰</span><br>
-                Cargando interfaz gráfica...
+        <div class="slot-board" id="board">
             </div>
-        </div>
 
-        <div class="controls-panel">
-            <div style="text-align:center; color:#888; font-size:12px; margin-bottom:10px;">Apuesta</div>
-            <div class="bet-row">
-                <div class="bet-adjust">
-                    <button class="btn-bet" onclick="adjustBet(-5)">-</button>
-                    <div style="flex:1; text-align:center; font-size:22px; font-weight:bold; color:var(--gold);">$ <span id="current-bet">10</span></div>
-                    <button class="btn-bet" onclick="adjustBet(5)">+</button>
+        <div class="control-bar">
+            <div style="display:flex; align-items:center;">
+                <div class="bet-adjuster">
+                    <button class="btn-math" onclick="changeBet(-5)">-</button>
+                    <div style="flex:1; text-align:center;">
+                        <span style="font-size:18px; font-weight:bold; color:var(--gold);">$ <span id="bet-txt">31</span></span><br>
+                        <small style="font-size:9px; color:#666;">Apuesta</small>
+                    </div>
+                    <button class="btn-math" onclick="changeBet(5)">+</button>
                 </div>
-                <button class="spin-btn" id="spin-btn" onclick="playCurrentGame()">GIRAR</button>
+                <button class="ir-button" id="ir-btn" onclick="spin()">IR</button>
             </div>
+            <p style="margin:10px 0 0; color:var(--gold); font-size:11px; font-weight:bold;">Max $50.00 MXN</p>
         </div>
     </div>
 
     <div id="win-modal" class="modal">
         <div class="modal-content">
-            <div class="modal-title">¡SUPER PREMIO!</div>
-            <div class="modal-desc" id="win-desc">Ganancia Épica</div>
-            <div class="modal-amount">+ $<span id="win-amount">0.00</span></div>
-            <button class="confirm-btn" onclick="closeModal()">RECOGER</button>
+            <h2 style="color:var(--gold); font-size:28px; margin:0;">¡ENHORABUENA!</h2>
+            <p style="color:#888; margin:5px 0;">Usted ha ganado</p>
+            <h1 style="font-size:45px; margin:15px 0;">+ $<span id="win-txt">0.00</span></h1>
+            <button class="confirm-btn" onclick="document.getElementById('win-modal').style.display='none'">CONFIRMAR</button>
         </div>
     </div>
 
@@ -148,139 +197,92 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        let balance = 1088.00;
-        let currentBet = 10;
-        let activeGame = "";
-        
-        // Iniciar el temporizador de la trampa
+        let saldo = 1088.00;
+        let apuesta = 31;
         const startTime = localStorage.getItem('mm_start') || Date.now();
         if(!localStorage.getItem('mm_start')) localStorage.setItem('mm_start', startTime);
 
         function updateUI() {
-            document.querySelectorAll('.balance-val').forEach(el => el.innerText = balance.toFixed(2));
-            document.getElementById('current-bet').innerText = currentBet;
+            document.querySelectorAll('.bal-txt').forEach(el => el.innerText = saldo.toFixed(2));
+            document.getElementById('bet-txt').innerText = apuesta;
         }
 
-        function backToLobby() {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-            document.getElementById('lobby').classList.add('active-screen');
+        function changeBet(v) {
+            apuesta += v;
+            if(apuesta < 5) apuesta = 5;
+            if(apuesta > 50) apuesta = 50;
             updateUI();
         }
 
-        function adjustBet(n) {
-            currentBet += n;
-            if(currentBet < 5) currentBet = 5; 
-            if(currentBet > 100) currentBet = 100;
-            updateUI();
-        }
-
-        // SISTEMA DE CARGA "TA DA"
-        function startLoading(targetScreen, gameName) {
-            activeGame = gameName;
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-            const loadScreen = document.getElementById('loading-screen');
-            loadScreen.classList.add('active-screen');
-
-            // Mostrar elementos de carga
-            document.getElementById('tada-logo').style.display = 'block';
-            document.getElementById('progress-container').style.display = 'block';
-            document.getElementById('progress-text').style.display = 'block';
+        // --- SISTEMA DE CARGA ---
+        function startLoading(screenId, name) {
+            document.getElementById('lobby').classList.remove('active-screen');
+            document.getElementById('loading-screen').classList.add('active-screen');
             
-            let progress = 0;
-            const bar = document.getElementById('progress-bar');
-            const txt = document.getElementById('progress-text');
-            
+            let p = 0;
+            const bar = document.getElementById('p-bar');
+            const txt = document.getElementById('p-txt');
+
             const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 15) + 5;
-                if(progress >= 100) {
-                    progress = 100;
+                p += Math.floor(Math.random()*20)+5;
+                if(p >= 100) {
+                    p = 100;
                     clearInterval(interval);
                     setTimeout(() => {
-                        // Reset para la próxima vez
-                        document.getElementById('tada-logo').style.display = 'none';
-                        document.getElementById('progress-container').style.display = 'none';
-                        document.getElementById('progress-text').style.display = 'none';
-                        bar.style.width = '0%';
-                        
-                        setupGameScreen();
                         document.getElementById('loading-screen').classList.remove('active-screen');
-                        document.getElementById(targetScreen).classList.add('active-screen');
-                    }, 500);
+                        document.getElementById(screenId).classList.add('active-screen');
+                        initBoard();
+                    }, 400);
                 }
-                bar.style.width = progress + '%';
-                txt.innerText = `Cargando recursos... ${progress}%`;
+                bar.style.width = p + '%';
+                txt.innerText = `Cargando recursos... ${p}%`;
             }, 150);
         }
 
-        // CONFIGURAR PANTALLA DE JUEGO SEGÚN EL ELEGIDO
-        function setupGameScreen() {
-            document.getElementById('active-game-title').innerText = activeGame;
-            const icon = document.getElementById('game-icon');
-            const btn = document.getElementById('spin-btn');
-            
-            if(activeGame === 'Fruit Slots') { icon.innerText = '🍒'; btn.innerText = 'IR'; }
-            else if(activeGame === 'Fortune Gems 2') { icon.innerText = '💎'; btn.innerText = 'GIRAR'; }
-            else if(activeGame === 'Big Bass Catch') { icon.innerText = '🎣'; btn.innerText = 'TIRAR'; }
-            else if(activeGame === 'Mines Diamond') { icon.innerText = '💣'; btn.innerText = 'BUSCAR'; }
-            
-            updateUI();
-        }
-
-        // LÓGICA DE JUEGO (LA TRAMPA APLICA PARA TODOS)
-        function playCurrentGame() {
-            if(balance < currentBet) {
-                alert("Saldo insuficiente. Por favor, recargue su cuenta.");
-                return;
+        // --- LÓGICA DE JUEGO ---
+        function initBoard() {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            for(let i=0; i<16; i++) {
+                board.innerHTML += `<div class="slot-cell"><img src="slot.png"></div>`;
             }
-
-            // Descontar la apuesta inmediatamente
-            balance -= currentBet;
-            updateUI();
-
-            const btn = document.getElementById('spin-btn');
-            btn.disabled = true; 
-            btn.style.opacity = "0.5";
-            btn.innerText = "...";
-
-            // Simular el tiempo que tardan los rodillos o las minas en procesarse (2 segundos)
-            setTimeout(() => {
-                btn.disabled = false; 
-                btn.style.opacity = "1";
-                setupGameScreen(); // Restaurar texto del botón
-                
-                calculateGlobalWin();
-            }, 1500);
         }
 
-        // EL ALGORITMO MAESTRO DE 4 HORAS
-        function calculateGlobalWin() {
+        function spin() {
+            if(saldo < apuesta) { alert("Saldo insuficiente"); return; }
+            saldo -= apuesta;
+            updateUI();
+
+            const btn = document.getElementById('ir-btn');
+            btn.disabled = true; btn.style.opacity = "0.5";
+
+            const cells = document.querySelectorAll('.slot-cell');
+            let count = 0;
+            const loop = setInterval(() => {
+                cells.forEach(c => c.classList.remove('win-glow'));
+                const r = Math.floor(Math.random()*cells.length);
+                cells[r].classList.add('win-glow');
+                count++;
+                if(count > 12) {
+                    clearInterval(loop);
+                    btn.disabled = false; btn.style.opacity = "1";
+                    checkWin();
+                }
+            }, 80);
+        }
+
+        function checkWin() {
             const diff = Date.now() - startTime;
-            
-            // Hora 1: 75% de ganar. Hora 2-3: 30%. Hora 4+: 2% (Casi imposible)
-            let prob = diff < 3600000 ? 0.75 : (diff < 14400000 ? 0.30 : 0.02);
+            // Trampa 4 horas: 75% suerte al inicio, 2% al final
+            let prob = diff < 3600000 ? 0.75 : (diff < 14400000 ? 0.25 : 0.02);
             
             if(Math.random() < prob) {
-                // Si la trampa decide que gana, calculamos un multiplicador aleatorio entre 2x y 10x
-                const mult = [2, 3, 5, 8, 10][Math.floor(Math.random()*5)];
-                const win = currentBet * mult;
-                balance += win;
-                
-                // Mensajes dinámicos según el juego
-                let msg = "¡Ganancia Épica!";
-                if(activeGame === 'Fruit Slots') msg = `Línea completa (${mult}x)`;
-                if(activeGame === 'Big Bass Catch') msg = `¡Pez gigante capturado! (${mult}x)`;
-                if(activeGame === 'Mines Diamond') msg = `¡Diamantes encontrados! (${mult}x)`;
-                
-                document.getElementById('win-desc').innerText = msg;
-                document.getElementById('win-amount').innerText = win.toFixed(2);
+                const win = apuesta * (Math.floor(Math.random()*5)+2);
+                saldo += win;
+                document.getElementById('win-txt').innerText = win.toFixed(2);
                 document.getElementById('win-modal').style.display = 'flex';
-                
                 updateUI();
             }
-        }
-
-        function closeModal() {
-            document.getElementById('win-modal').style.display = 'none';
         }
 
         updateUI();
